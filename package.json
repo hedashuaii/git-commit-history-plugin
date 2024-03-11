@@ -1,6 +1,6 @@
 {
   "name": "git-commit-history-webpack-plugin",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "This is a webpack plugin that generates the most recent git commit record into a file",
   "main": "dist/index.js",
   "scripts": {
@@ -19,6 +19,7 @@
   "homepage": "https://github.com/hedashuaii/git-commit-history-webpack-plugin#readme",
   "dependencies": {
     "@types/webpack": "^5.28.5",
+    "chalk": "4.0.0",
     "typescript": "^5.3.3"
   }
 }

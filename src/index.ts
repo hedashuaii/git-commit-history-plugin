@@ -1,5 +1,6 @@
 import { Compiler, sources } from "webpack";
 const { execSync } = require("child_process");
+const chalk = require("chalk");
 
 export interface GitCommitHistoryWebpackPluginOptions {
   /**
@@ -25,18 +26,23 @@ class GitCommitHistoryWebpackPlugin {
         // 设置 execSync 执行的通用参数
         const execSyncParams = { cwd: compiler.context, encoding: "utf8" };
 
-        // 获取当前 git 分支
-        const gitBranch = execSync(
-          "git symbolic-ref --short HEAD",
-          execSyncParams
-        );
+        let gitBranch = '';
+        let gitLog = '';
 
-        // 执行git log命令获取commit记录
-        const gitLog = execSync(
-          'git log --date=format:"%Y-%m-%d %H:%M:%S" --pretty=format:"%h - %an, %cd: %s" --abbrev-commit',
-          execSyncParams
-        );
+        try {
+          // 获取当前 git 分支
+          gitBranch = execSync("git symbolic-ref --short HEAD", execSyncParams);
+        } catch (error) {
+          console.log(chalk.red("Error: Failed to get git commit history. Please check whether the current repository uses git."));
+        }
 
+        try {
+          // 执行git log命令获取commit记录
+          gitLog = execSync('git log --date=format:"%Y-%m-%d %H:%M:%S" --pretty=format:"%h - %an, %cd: %s" --abbrev-commit', execSyncParams);
+        } catch (error) {
+          console.log(chalk.red("Error: Failed to get git commit history. Please check whether the current repository uses git."));
+        }
+        
         // 当前时间
         const currentTime = new Date().toLocaleString();
 
